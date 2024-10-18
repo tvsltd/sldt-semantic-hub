@@ -19,17 +19,23 @@
  ********************************************************************************/
 package org.eclipse.tractusx.semantics;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Profile("!local")
 @Configuration
 public class OAuthSecurityConfig {
+    @Value("${jwt.issuer-uri}")
+    private String issuerUri; // Fetch issuer URI from application.properties
+
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
@@ -44,7 +50,21 @@ public class OAuthSecurityConfig {
             .oauth2ResourceServer().jwt();
 
         return http.build();
-
-
     }
+    // @Bean
+    // public JwtDecoder jwtDecoder() {
+    //     // Create a JwtDecoder using the issuer URI
+    //     return NimbusJwtDecoder.withJwkSetUri(issuerUri).build();
+    // }
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        // Create a JwtDecoder using the issuer URI
+        return NimbusJwtDecoder.withJwkSetUri(issuerUri).build();
+    }
+    // @Bean
+    // public JwtDecoder jwtDecoder(){
+    //     return token -> {
+    //         throw new UnsupportedOperationException("The JwtDecoder must not be called in tests by Spring.");
+    //     };
+    // }
 }
