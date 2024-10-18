@@ -42,8 +42,8 @@ hub:
   # If no value is committed, and the integrated Keycloak is enabled,
   # the K8s internal service name is used, which is a problem, when
   # validating the issuer claim in an access token
-  idpIssuerUri: ""
-  idpClientId: default-client
+  idpIssuerUri: http://keycloak:8080/realms/demo-realm
+  idpClientId: demo-client
   ## Ignored if 'graphdb.enabled' is set to true
   graphdbBaseUrl: http://graphdb:3030
   service:

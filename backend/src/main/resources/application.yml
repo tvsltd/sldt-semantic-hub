@@ -26,10 +26,15 @@ hub:
   triple-store:
     embedded:
       enabled: false
+    baseUrl: http://keycloak:3030/ds
+    username: admin
+    password: admin
+    queryEndpoint: query
+    updateEndpoint: update
 # Below is an example configuration to connect with an external fuseki instance.
 # The configuration fits in when the above embedded.enabled property is set to false.
 # The /test-dataset/ is the name of the dataset to execute against. Adjust it to your setup accordingly.
-#   baseUrl: http://localhost:3030
+#   baseUrl: http://keycloak:3030
 #   queryEndpoint: /test-dataset/query
 #   updateEndpoint: /test-dataset/update
 #   username: admin
@@ -38,6 +43,10 @@ hub:
     idm:
       public-client-id: catenax-portal
 
+jwt:
+  # issuer-uri:
+  # issuer-uri: http://keycloak:8080/realms/demo-realm
+  issuer-uri: http://keycloak:8080/realms/demo-realm/protocol/openid-connect/certs
 
 http:
   timeout:
@@ -54,6 +63,12 @@ spring:
       matching-strategy: ant-path-matcher
   banner:
     location: "classpath:banner.txt"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/demo-realm/protocol/openid-connect/certs
+          jwk-set-uri: http://keycloak:8080/realms/demo-realm/protocol/openid-connect/certs
   servlet:
     multipart:
       enabled: true
@@ -62,7 +77,7 @@ spring:
       file-size-threshold: 2KB
   # How to deal with REST representation problems
   jackson:
-    default-property-inclusion: non_null
+    demo-property-inclusion: non_null
 
 springdoc:
   cache:

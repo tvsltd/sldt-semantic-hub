@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "ee503700-0b61-41bd-99e5-6ae3d15b0c2f",
+		"name": "Semantic Hub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27191233"
+	},
+	"item": [
+		{
+			"name": "Get Models",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": {
+						"accessTokenUrl": "http://{{keycloak_url}}/realms/{{realm}}/protocol/openid-connect/token",
+						"clientId": "demo-client",
+						"password": "demouser",
+						"username": "demouser",
+						"client_authentication": "header",
+						"grant_type": "password_credentials",
+						"addTokenTo": "header"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoUU1vaXlIMlQtZzJ6aHUtVnp4LVpnS3owMG1RNVdUbzBCU3RURjJ3M3dnIn0.eyJleHAiOjE3MjkxMDA4MDQsImlhdCI6MTcyOTEwMDUwNCwianRpIjoiMTM2MzAzYjgtZjJjMC00Mzc4LTg2N2EtMjMyZDI0M2U2MGI2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9UZXN0UmVsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiN2M5NTE4Ni0zNzJiLTRjMjEtOTIyYS0zZDg1MDQ0OTNkMTUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJUZXN0Iiwic2Vzc2lvbl9zdGF0ZSI6IjAwMzY5ZWU1LTU1MzEtNDMzZS1iNGM1LTY0YjExMWFjZWFmYSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy10ZXN0IHJlbG0iLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjAwMzY5ZWU1LTU1MzEtNDMzZS1iNGM1LTY0YjExMWFjZWFmYSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4ifQ.e4Uhw3xBmVc6zKNxRpAKP17b08vq3t5Tke_JQUSJF7RCshhmvfZSxjhgS_rWqjGKRNsiTD2iZx-zVpoPjowNTEaGdP7vRjoAGMREmpAeL0s_oNHYiyGozIVIrBY3u2rRDZp18yQdC0vW8nNk3MdIRuck2wRXA_WDmE4dzaSq-YJYrRdRowOrGek5O25zU3Por-GRqVIhK5N-T9q1iDkNb8VDbFMdz6AgxtHO6M-EvfOxCe_YwYZd-VqFrwLMM8I7LKn9149CjvX1F8oJlLXXCwJTemMQsNAQ4P9jp_Y62r8oBW8flW-fhMS18yGW-mx0OvcV5F8BvWXaOwxXF0qWCg",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{hub_url}}/api/v1/models?pageSize=10&page=1",
+					"protocol": "http",
+					"host": [
+						"{{hub_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"models"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "403",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoUU1vaXlIMlQtZzJ6aHUtVnp4LVpnS3owMG1RNVdUbzBCU3RURjJ3M3dnIn0.eyJleHAiOjE3MjkxMDA4MDQsImlhdCI6MTcyOTEwMDUwNCwianRpIjoiMTM2MzAzYjgtZjJjMC00Mzc4LTg2N2EtMjMyZDI0M2U2MGI2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9UZXN0UmVsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiN2M5NTE4Ni0zNzJiLTRjMjEtOTIyYS0zZDg1MDQ0OTNkMTUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJUZXN0Iiwic2Vzc2lvbl9zdGF0ZSI6IjAwMzY5ZWU1LTU1MzEtNDMzZS1iNGM1LTY0YjExMWFjZWFmYSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy10ZXN0IHJlbG0iLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjAwMzY5ZWU1LTU1MzEtNDMzZS1iNGM1LTY0YjExMWFjZWFmYSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4ifQ.e4Uhw3xBmVc6zKNxRpAKP17b08vq3t5Tke_JQUSJF7RCshhmvfZSxjhgS_rWqjGKRNsiTD2iZx-zVpoPjowNTEaGdP7vRjoAGMREmpAeL0s_oNHYiyGozIVIrBY3u2rRDZp18yQdC0vW8nNk3MdIRuck2wRXA_WDmE4dzaSq-YJYrRdRowOrGek5O25zU3Por-GRqVIhK5N-T9q1iDkNb8VDbFMdz6AgxtHO6M-EvfOxCe_YwYZd-VqFrwLMM8I7LKn9149CjvX1F8oJlLXXCwJTemMQsNAQ4P9jp_Y62r8oBW8flW-fhMS18yGW-mx0OvcV5F8BvWXaOwxXF0qWCg",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{hub_url}}/api/v1/models?pageSize=10&page=1",
+							"protocol": "http",
+							"host": [
+								"{{hub_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"models"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 18 Oct 2024 19:36:03 GMT"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "WWW-Authenticate",
+							"value": "Bearer error=\"insufficient_scope\", error_description=\"The request requires higher privileges than provided by the access token.\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\""
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "keycloak_url",
+			"value": "localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "realm",
+			"value": "demo-realm",
+			"type": "string"
+		},
+		{
+			"key": "hub_url",
+			"value": "localhost:4242",
+			"type": "string"
+		}
+	]
+}
