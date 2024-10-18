@@ -1,0 +1,69 @@
+networks:
+  keycloak-network:
+    external: true
+
+services:
+  hub:
+    container_name: semantic_hub
+    image: semantic_hub
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4242:4242
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms512m -Xmx2048m
+    depends_on:
+      - keycloak
+    networks:
+      - default
+
+  postgres:
+    container_name: keycloak-backend-postgres
+    image: postgres:15.6-alpine
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+      - ./00_create_db.sql:/docker-entrypoint-initdb.d/create-db.sql
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - default
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  keycloak:
+    container_name: backend-keycloak
+    image: bitnami/keycloak:23.0.6
+    environment:
+      KEYCLOAK_DATABASE_VENDOR: postgresql
+      KEYCLOAK_DATABASE_HOST: postgres
+      KEYCLOAK_DATABASE_PORT: 5432
+      KEYCLOAK_DATABASE_NAME: keycloak
+      KEYCLOAK_DATABASE_USER: postgres
+      KEYCLOAK_DATABASE_PASSWORD: postgres
+      KEYCLOAK_DATABASE_SCHEMA: public
+      KEYCLOAK_ADMIN_USER: keycloak
+      KEYCLOAK_ADMIN_PASSWORD: keycloak
+      KC_HTTP_ENABLED: 'true'
+    links:
+      - postgres
+    ports:
+      - 8080:8080
+    volumes:
+      - ./tvs-demo-realm-import.json:/opt/keycloak/data/import/tvs-demo-realm-import.json
+    networks:
+      - default
+    restart: unless-stopped
+
+    depends_on:
+      postgres:
+        condition: service_healthy
