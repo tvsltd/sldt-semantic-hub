@@ -1,27 +1,92 @@
-## Setup & Usage (Docker)
+# Semantic Hub - Docker Setup Guide
 
-Follow the steps below to setup & run semantic-hub:
+This guide provides comprehensive instructions for setting up and running the Semantic Hub using Docker.
 
-1. Run docker compose to launch all services (semantic hub, keycloak, postgres). 
+## Prerequisites
 
-    > $ docker compose -f docker-compose-tvs.yml up
+- Docker and Docker Compose installed on your system
+- Postman (for API testing)
+- Basic understanding of Keycloak authentication
 
-2. The semantic hub will be launched on port [4242](http://localhost:4242) and keycloak will be launched in port [8080](http://localhost:8080)
+## Quick Start
 
-3. We modified there `default-realm-import.json` config into this `tvs-demo-realm-import.json`
+1. Launch Services
+    ```bash
+    $ docker compose -f docker-compose-tvs.yml up
+    ```
+This command starts all required services:
+- Semantic Hub (Port 4242)
+- Keycloak (Port 8080)
+- PostgreSQL Database
 
-4. You can checkout the configurations in the [keycloak](http://localhost:8080). Use `keycloak` as username and password to login.
+## Service Access
 
-5. You can also try to go through the Swagger documentation and try exploring the APIs (which won't work) of [Semantic Hub](http://localhost:4242)
+### Semantic Hub
+- URL: [http://localhost:4242](http://localhost:4242)
+- API Documentation: Available through Swagger UI at the same URL
 
-6. Now open postman and import the collection in the project repository named **Semantic Hub.postman_collection.json**
+### Keycloak
+- URL: [http://localhost:8080](http://localhost:8080)
+- Credentials:
+  - Username: `keycloak`
+  - Password: `keycloak`
+- Configuration: Using customized realm configuration `tvs-demo-realm-import.json` (modified from `default-realm-import.json`)
 
-7. For the sake of simplicity, I have used hard coded authentication process in the Authentication tab of the `Get Models` request.
+## API Testing Guide
 
-8. Click on the `Get access token` button to get and set the access token for authorization. 
+### Postman Setup
+1. Import Collection
+   - Locate `semantic-hub.postman_collection.json` in the project repository
+   - Import into Postman
 
-9. Now perform the request to get the models. (As expected it won't work :p). Which will throw 403 permission denied error.
+### Authentication
+1. Navigate to the "Authentication" tab in the `Get Models` request
+2. Click "Get access token" to obtain and automatically set the authorization token
+3. The authentication process is simplified using hardcoded credentials for development purposes
 
-10. You are ready to explore further more by making changes by yourself. Just make sure to use the following command after making modifications in the codebase:
+### Known Behaviors
+- Initial API requests may return a 403 (Permission Denied) error
+- This is expected behavior during the initial setup phase
 
-    > docker compose  -f docker-compose-tvs.yml up --build
+## Development
+
+### Making Changes
+1. Modify the codebase as needed
+2. Rebuild and restart the services:
+    ```bash
+    $ docker compose -f docker-compose-tvs.yml up --build
+    ```
+
+## Troubleshooting
+
+Common Issues:
+1. Port Conflicts
+   - Ensure ports 4242 and 8080 are available
+   - Check for other services using these ports
+
+2. Authentication Issues
+   - Verify Keycloak is running
+   - Confirm realm configuration is properly loaded
+   - Check token expiration
+
+3. Service Dependencies
+   - Ensure all services are running (`docker ps`)
+   - Check service logs for errors
+
+## Security Notes
+
+- Current authentication setup is for development purposes only
+- Modify credentials and security settings before deploying to production
+- Review and update the Keycloak configuration for production use
+
+## Support
+
+For additional support:
+- Check the service logs using `docker logs [container-name]`
+- Review Keycloak documentation for authentication issues
+- Create an issue in the repository for bug reports
+
+## Additional Resources
+
+- Keycloak Documentation: [Official Keycloak Docs](https://www.keycloak.org/documentation)
+- Semantic Hub API Documentation: Available through Swagger UI
