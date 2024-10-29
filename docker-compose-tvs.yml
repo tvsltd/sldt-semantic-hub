@@ -1,8 +1,14 @@
+# Docker Compose configuration for Semantic Hub with Keycloak Authentication
+version: '3.8'
+
+# Network Configuration
 networks:
   keycloak-network:
-    external: true
+    external: true  # Use pre-existing network for Keycloak communication
 
 services:
+  # Semantic Hub Service
+  # Main application service that provides semantic model management
   hub:
     container_name: semantic_hub
     image: semantic_hub
@@ -10,60 +16,68 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 4242:4242
+      - "4242:4242"  # Expose Semantic Hub API port
     environment:
-      JAVA_TOOL_OPTIONS: -Xms512m -Xmx2048m
+      JAVA_TOOL_OPTIONS: -Xms512m -Xmx2048m  # JVM memory settings
     depends_on:
-      - keycloak
+      - keycloak  # Ensure Keycloak is available before starting
     networks:
-      - default
+      - default  # Use default network for internal communication
 
+  # PostgreSQL Database Service
+  # Provides database for Keycloak and application data
   postgres:
     container_name: keycloak-backend-postgres
     image: postgres:15.6-alpine
     volumes:
-      - ./postgres:/var/lib/postgresql/data
-      - ./00_create_db.sql:/docker-entrypoint-initdb.d/create-db.sql
+      - ./postgres:/var/lib/postgresql/data             # Persist database data
+      - ./00_create_db.sql:/docker-entrypoint-initdb.d/create-db.sql  # Initial DB setup
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres           # Database name
+      POSTGRES_USER: postgres         # Database user
+      POSTGRES_PASSWORD: postgres     # Database password (WARNING: Change in production)
     ports:
-      - 5432:5432
+      - "5432:5432"  # Expose PostgreSQL port
     networks:
       - default
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 60s
-    restart: unless-stopped
+      interval: 10s    # Check every 10 seconds
+      timeout: 5s      # Timeout after 5 seconds
+      retries: 3       # Retry 3 times
+      start_period: 60s  # Initial grace period
+    restart: unless-stopped  # Automatically restart container unless explicitly stopped
 
+  # Keycloak Service
+  # Provides authentication and authorization services
   keycloak:
     container_name: backend-keycloak
     image: bitnami/keycloak:23.0.6
     environment:
+      # Database Configuration
       KEYCLOAK_DATABASE_VENDOR: postgresql
       KEYCLOAK_DATABASE_HOST: postgres
       KEYCLOAK_DATABASE_PORT: 5432
       KEYCLOAK_DATABASE_NAME: keycloak
       KEYCLOAK_DATABASE_USER: postgres
-      KEYCLOAK_DATABASE_PASSWORD: postgres
+      KEYCLOAK_DATABASE_PASSWORD: postgres  # WARNING: Change in production
       KEYCLOAK_DATABASE_SCHEMA: public
-      KEYCLOAK_ADMIN_USER: keycloak
-      KEYCLOAK_ADMIN_PASSWORD: keycloak
-      KC_HTTP_ENABLED: 'true'
+      
+      # Admin Credentials
+      KEYCLOAK_ADMIN_USER: keycloak        # WARNING: Change in production
+      KEYCLOAK_ADMIN_PASSWORD: keycloak     # WARNING: Change in production
+      
+      # HTTP Configuration
+      KC_HTTP_ENABLED: 'true'              # Enable HTTP (use HTTPS in production)
     links:
-      - postgres
+      - postgres  # Legacy link to postgres service
     ports:
-      - 8080:8080
+      - "8080:8080"  # Expose Keycloak admin console
     volumes:
-      - ./tvs-demo-realm-import.json:/opt/keycloak/data/import/tvs-demo-realm-import.json
+      - ./tvs-demo-realm-import.json:/opt/keycloak/data/import/tvs-demo-realm-import.json  # Realm configuration
     networks:
       - default
     restart: unless-stopped
-
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_healthy  # Wait for postgres health check to pass
